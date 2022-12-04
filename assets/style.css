@@ -30,8 +30,14 @@ main {
     border-radius: 6px;
 }
 
+#try-again {
+    padding-top: 5px;
+    margin-top: 20px;
+    border-top: 2px solid rgba(0, 0, 0, 0.6);
+}
+
 button {
-    background-color: rgb(172, 113, 201);
+    background-color: rgb(204, 134, 239);
     padding: 7px;
     border-radius: 4px;
     margin: 8px;

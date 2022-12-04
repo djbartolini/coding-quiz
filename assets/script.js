@@ -72,6 +72,7 @@ var advance = function() {
 
 var startQuiz = function() {
     if (index > 0) {
+        tryAgain.style.display = "none";
         h2El.textContent = questions[index];
         pEl.style.display = "none";
         startEl.style.display = "none";
@@ -149,7 +150,7 @@ function countdown() {
     var timeInterval = setInterval(function() {
         timeLeft--;
         displayTimer();
-        if (timeLeft === 0 || index > 5) {
+        if (timeLeft <= 0 || index > 5) {
             clearInterval(timeInterval);
             gameOver();
         }
