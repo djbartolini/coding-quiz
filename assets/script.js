@@ -5,6 +5,7 @@ var button2El = document.getElementById("button2");
 var button3El = document.getElementById("button3");
 var button4El = document.getElementById("button4");
 var timerEl = document.getElementById("timer");
+var tryAgain = document.getElementById("try-again");
 var formEl = document.getElementById("form");
 var submitEl = document.getElementById("submit");
 var pEl = document.getElementById("p");
@@ -20,6 +21,7 @@ button2El.style.display = "none";
 button3El.style.display = "none";
 button4El.style.display = "none";
 timerEl.style.display = "none";
+tryAgain.style.display = "none";
 formEl.style.display = "none";
 tableEl.style.display = "none";
 tableHead.style.display = "none";
@@ -103,6 +105,7 @@ var startQuiz = function() {
         button2El.textContent = optionB[index - 1];
         button3El.textContent = optionC[index - 1];
         button4El.textContent = optionD[index - 1];
+        button1El.removeEventListener("click", advance);
         button1El.addEventListener("click", deduct);
         button2El.addEventListener("click", deduct);
         button3El.addEventListener("click", deduct);
@@ -118,6 +121,7 @@ var startQuiz = function() {
         button2El.addEventListener("click", deduct);
         button3El.removeEventListener("click", deduct);
         button3El.addEventListener("click", advance);
+        button4El.removeEventListener("click", advance);
         button4El.addEventListener("click", deduct);
     }
     if (index === 5) {
@@ -128,6 +132,7 @@ var startQuiz = function() {
         button1El.removeEventListener("click", deduct);
         button1El.addEventListener("click", advance);
         button2El.addEventListener("click", deduct);
+        button3El.removeEventListener("click", advance);
         button3El.addEventListener("click", deduct);
         button4El.addEventListener("click", deduct);
     }
@@ -158,16 +163,16 @@ function displayTimer() {
 
 function deduct() {
     timeLeft = timeLeft - 15;
+    tryAgain.style.display = "block";
 }
 /////////////////////////////////
 
 
 // GAME OVER /////////////////////
 
-var initials = [];
-var allScores = [];
-
 var gameOver = function() {
+    var allInitials = [localStorage.getItem("initials")];
+    var allScores = [localStorage.getItem("scores")];
     var score = timeLeft;
     if (score > 0) {
         h2El.textContent = "All Done!";
@@ -181,22 +186,27 @@ var gameOver = function() {
     formEl.style.display = "block";
     submitEl.addEventListener("click", function(event) {
         event.preventDefault();
-        initials.unshift(document.querySelector("#initials").value);
-        allScores.unshift(score);
-        localStorage.setItem("initials", initials);
+        var initials = document.querySelector("#initials").value;
+        allInitials.push(initials);
+        allScores.push(score);
+        localStorage.setItem("initials", allInitials);
         localStorage.setItem("scores", allScores);
         renderScores();
     })
 }
+
 
 var renderScores = function() {
     h2El.textContent = "High Scores"
     formEl.style.display = "none";
     tableHead.style.display = "inline-table"
     tableEl.style.display = "inline-table";
-    tableInitials.style.display = "flex";
-    tableScore.style.display = "flex";
-    tableInitials.textContent = localStorage.getItem("initials") + ":";
+    tableInitials.style.display = "inline-table";
+    // tableInitials.style.flexDirection = "column";
+    tableScore.style.display = "inline-table";
+    // tableScore.style.flexDirection = "column"
+    var initialsText = localStorage.getItem("initials");
+    tableInitials.textContent = initialsText;
     tableScore.textContent = localStorage.getItem("scores");
     goBack.style.display = "inline-block";
     clear.style.display = "inline-block";
@@ -219,10 +229,11 @@ var restart = function() {
 
 var clearTable = function() {
     localStorage.clear();
+    initials = [];
+    allScores = [];
     tableInitials.textContent = "";
     tableScore.textContent = "";
 }
-
 //////////////////////////////////
 
 startEl.addEventListener("click", advance);

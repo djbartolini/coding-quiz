@@ -9,8 +9,9 @@ body {
 }
 
 header {
-    background-color: royalblue;
+    background-image: linear-gradient(to bottom right, royalblue, rgb(172, 113, 201));
     padding: 25px;
+    border-radius: 15px;
 }
 
 main {
@@ -26,4 +27,13 @@ main {
     margin: 50px 45% 0 45%;
     background-color: royalblue;
     padding: 10px;
+    border-radius: 6px;
+}
+
+button {
+    background-color: rgb(172, 113, 201);
+    padding: 7px;
+    border-radius: 4px;
+    margin: 8px;
+    font-family: Verdana;
 }
