@@ -7,11 +7,26 @@ var button4El = document.getElementById("button4");
 var timerEl = document.getElementById("timer");
 var formEl = document.getElementById("form");
 var submitEl = document.getElementById("submit");
-var highScoresEl = document.getElementById("high-scores");
 var pEl = document.getElementById("p");
-var index = 0;
+var tableEl = document.getElementById("table");
+var tableInitials = document.getElementById("table-initials");
+var tableScore = document.getElementById("table-score");
+var tableHead = document.getElementById("th");
+var goBack = document.getElementById("go-back");
+var clear = document.getElementById("clear");
 
-var timeLeft = 75;
+button1El.style.display = "none";
+button2El.style.display = "none";
+button3El.style.display = "none";
+button4El.style.display = "none";
+timerEl.style.display = "none";
+formEl.style.display = "none";
+tableEl.style.display = "none";
+tableHead.style.display = "none";
+tableInitials.style.display = "none";
+tableScore.style.display = "none";
+goBack.style.display = "none";
+clear.style.display = "none";
 
 var questions = [
     "Welcome to the Coding Quiz!",
@@ -23,29 +38,23 @@ var questions = [
 ];
 
 var optionA = [
-    "1a", "2a", "3a", "4a", "5a"
+    "1a correct", "2a correct", "3a", "4a", "5a correct"
 ];
 var optionB = [
     "1b", "2b", "3b", "4b", "5b"
 ];
 var optionC = [
-    "1c", "2c", "3c", "4c", "5c"
+    "1c", "2c", "3c", "4c correct", "5c"
 ];
 var optionD = [
-    "1d", "2d", "3d", "4d", "5d"
+    "1d", "2d", "3d correct", "4d", "5d"
 ];
 
+var timeLeft = 75;
 
-button1El.style.display = "none";
-button2El.style.display = "none";
-button3El.style.display = "none";
-button4El.style.display = "none";
-timerEl.style.display = "none";
-formEl.style.display = "none";
-highScoresEl.style.display = "none";
+var index = 0;
 
-
-// CLICK 'START' TO START THE QUIZ ////////////
+// START AND ADVANCE THROUGH QUIZ ////////////
 
 var advance = function() {
     if (index === 0) {
@@ -58,12 +67,6 @@ var advance = function() {
         startQuiz();
     }
 }
-
-///////////////////////////////////////////////
-
-
-
-// ADVANCE QUESTIONS /////////////
 
 var startQuiz = function() {
     if (index > 0) {
@@ -132,12 +135,7 @@ var startQuiz = function() {
         gameOver();
     }
 }
-
 //////////////////////////////////
-
-
-
-
 
 
 // TIMER /////////////////////////
@@ -148,6 +146,7 @@ function countdown() {
         displayTimer();
         if (timeLeft === 0 || index > 5) {
             clearInterval(timeInterval);
+            gameOver();
         }
     }, 1000);
 }
@@ -160,14 +159,21 @@ function displayTimer() {
 function deduct() {
     timeLeft = timeLeft - 15;
 }
-
-
 /////////////////////////////////
+
 
 // GAME OVER /////////////////////
 
+var initials = [];
+var allScores = [];
+
 var gameOver = function() {
-    h2El.textContent = "All Done!"
+    var score = timeLeft;
+    if (score > 0) {
+        h2El.textContent = "All Done!";
+    } else {
+        h2El.textContent = "Game Over";
+    }
     button1El.style.display = "none";
     button2El.style.display = "none";
     button3El.style.display = "none";
@@ -175,12 +181,47 @@ var gameOver = function() {
     formEl.style.display = "block";
     submitEl.addEventListener("click", function(event) {
         event.preventDefault();
-        var initials = document.querySelector("#initials").value;
+        initials.unshift(document.querySelector("#initials").value);
+        allScores.unshift(score);
         localStorage.setItem("initials", initials);
+        localStorage.setItem("scores", allScores);
+        renderScores();
     })
 }
 
+var renderScores = function() {
+    h2El.textContent = "High Scores"
+    formEl.style.display = "none";
+    tableHead.style.display = "inline-table"
+    tableEl.style.display = "inline-table";
+    tableInitials.style.display = "flex";
+    tableScore.style.display = "flex";
+    tableInitials.textContent = localStorage.getItem("initials") + ":";
+    tableScore.textContent = localStorage.getItem("scores");
+    goBack.style.display = "inline-block";
+    clear.style.display = "inline-block";
+    goBack.addEventListener("click", restart);
+    goBack.addEventListener("click", countdown);
+    clear.addEventListener("click", clearTable);
+}
 
+var restart = function() {
+    timeLeft = 75;
+    index = 0;
+    tableEl.style.display = "none";
+    tableHead.style.display = "none";
+    tableInitials.style.display = "none";
+    tableScore.style.display = "none";
+    goBack.style.display = "none";
+    clear.style.display = "none";
+    advance();
+}
+
+var clearTable = function() {
+    localStorage.clear();
+    tableInitials.textContent = "";
+    tableScore.textContent = "";
+}
 
 //////////////////////////////////
 
