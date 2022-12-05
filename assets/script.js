@@ -12,7 +12,6 @@ var pEl = document.getElementById("p");
 var tableEl = document.getElementById("table");
 var tableInitials = document.getElementById("table-initials");
 var tableScore = document.getElementById("table-score");
-// var tableHead = document.getElementById("th");
 var goBack = document.getElementById("go-back");
 var clear = document.getElementById("clear");
 
@@ -24,9 +23,6 @@ timerEl.style.display = "none";
 tryAgain.style.display = "none";
 formEl.style.display = "none";
 tableEl.style.display = "none";
-// tableHead.style.display = "none";
-// tableInitials.style.display = "none";
-// tableScore.style.display = "none";
 goBack.style.display = "none";
 clear.style.display = "none";
 
@@ -63,14 +59,14 @@ var advance = function() {
         pEl.style.display = "block";
         startEl.style.display = "block";
         index++;
-        startQuiz();
+        advanceQuiz();
     } else {
         index++;
-        startQuiz();
+        advanceQuiz();
     }
 }
 
-var startQuiz = function() {
+var advanceQuiz = function() {
     if (index > 0) {
         tryAgain.style.display = "none";
         h2El.textContent = questions[index];
@@ -79,33 +75,25 @@ var startQuiz = function() {
         button1El.style.display = "block";
         button2El.style.display = "block";
         button3El.style.display = "block";
-        button4El.style.display = "block";      
-    }
-     if (index === 1) {
+        button4El.style.display = "block";  
         button1El.textContent = optionA[index - 1];
         button2El.textContent = optionB[index - 1];
         button3El.textContent = optionC[index - 1];
-        button4El.textContent = optionD[index - 1];
+        button4El.textContent = optionD[index - 1];    
+    }
+     if (index === 1) {
         button1El.addEventListener("click", advance);
         button2El.addEventListener("click", deduct);
         button3El.addEventListener("click", deduct);
         button4El.addEventListener("click", deduct);
     }
     if (index === 2) {
-        button1El.textContent = optionA[index - 1];
-        button2El.textContent = optionB[index - 1];
-        button3El.textContent = optionC[index - 1];
-        button4El.textContent = optionD[index - 1];
         button1El.addEventListener("click", advance);
         button2El.addEventListener("click", deduct);
         button3El.addEventListener("click", deduct);
         button4El.addEventListener("click", deduct);
     }
     if (index === 3) {
-        button1El.textContent = optionA[index - 1];
-        button2El.textContent = optionB[index - 1];
-        button3El.textContent = optionC[index - 1];
-        button4El.textContent = optionD[index - 1];
         button1El.removeEventListener("click", advance);
         button1El.addEventListener("click", deduct);
         button2El.addEventListener("click", deduct);
@@ -114,10 +102,6 @@ var startQuiz = function() {
         button4El.addEventListener("click", advance);
     }
     if (index === 4) {
-        button1El.textContent = optionA[index - 1];
-        button2El.textContent = optionB[index - 1];
-        button3El.textContent = optionC[index - 1];
-        button4El.textContent = optionD[index - 1];
         button1El.addEventListener("click", deduct);
         button2El.addEventListener("click", deduct);
         button3El.removeEventListener("click", deduct);
@@ -126,10 +110,6 @@ var startQuiz = function() {
         button4El.addEventListener("click", deduct);
     }
     if (index === 5) {
-        button1El.textContent = optionA[index - 1];
-        button2El.textContent = optionB[index - 1];
-        button3El.textContent = optionC[index - 1];
-        button4El.textContent = optionD[index - 1];
         button1El.removeEventListener("click", deduct);
         button1El.addEventListener("click", advance);
         button2El.addEventListener("click", deduct);
@@ -176,11 +156,9 @@ function deduct() {
 // GAME OVER /////////////////////
 
 var gameOver = function() {
-    var allInitials = JSON.parse(localStorage.getItem("initials")) || [];
-    var allScores = JSON.parse(localStorage.getItem("scores")) || [];
     var score = timeLeft;
-    timerEl.textContent = score;
-    if (score > 0) {
+    timerEl.textContent = timeLeft;
+    if (timeLeft > 0) {
         h2El.textContent = "All Done!";
     } else {
         h2El.textContent = "Game Over";
@@ -190,67 +168,56 @@ var gameOver = function() {
     button3El.style.display = "none";
     button4El.style.display = "none";
     formEl.style.display = "block";
-    submitEl.addEventListener("click", function(event) {
-        event.preventDefault();
-        var initials = document.querySelector("#initials").value;
-        allInitials.push(initials);
-        allScores.push(score);
-        localStorage.setItem("initials", JSON.stringify(allInitials));
-        localStorage.setItem("scores", JSON.stringify(allScores));
-        renderScores();
-    })
 }
+
+var allInitials = JSON.parse(localStorage.getItem("initials")) || [];
+var allScores = JSON.parse(localStorage.getItem("scores")) || [];
+submitEl.addEventListener("click", function(event) {
+    event.preventDefault();
+    var initials = document.querySelector("#initials").value;
+    allInitials.push(initials);
+    allScores.push(timeLeft);
+    localStorage.setItem("initials", JSON.stringify(allInitials));
+    localStorage.setItem("scores", JSON.stringify(allScores));
+    renderScores();
+})
+
+//////////////////////////////////////
+
+// HIGH SCORES ///////////////////////
 
 var renderScores = function() {
     h2El.textContent = "High Scores"
     formEl.style.display = "none";
-    // tableHead.style.display = "inline-table"
     tableEl.style.display = "inline-table";
-    // tableInitials.style.display = "flex";
-    // tableScore.style.display = "flex";
-
-    var initials = JSON.parse(localStorage.getItem("initials"));//.split(",").join(",");
+    var initials = JSON.parse(localStorage.getItem("initials"));
     var localScores = JSON.parse(localStorage.getItem("scores"));
-    for(var i = 0; i < initials.length; i++){
+    var localScores = localScores.sort().reverse();
+
+    for (var i = 0; i < initials.length; i++) {
         var trEl = document.createElement("tr");
         var initialEl = document.createElement("td");
         var scoreEl = document.createElement("td");
-
         initialEl.textContent = initials[i];
         scoreEl.textContent = localScores[i];
-
         trEl.appendChild(initialEl);
         trEl.appendChild(scoreEl);
         tableEl.append(trEl);
     }
-    // tableInitials.textContent = 
-    // tableScore.textContent = //.split(",");
-    
+
     goBack.style.display = "inline-block";
     clear.style.display = "inline-block";
     goBack.addEventListener("click", restart);
-    goBack.addEventListener("click", countdown);
     clear.addEventListener("click", clearTable);
 }
 
 var restart = function() {
-    timeLeft = 75;
-    index = 0;
-    tableEl.style.display = "none";
-    // tableHead.style.display = "none";
-    tableInitials.style.display = "none";
-    tableScore.style.display = "none";
-    goBack.style.display = "none";
-    clear.style.display = "none";
-    advance();
+    location.reload();
 }
 
 var clearTable = function() {
     localStorage.clear();
-    initials = [];
-    allScores = [];
-    tableInitials.textContent = "";
-    tableScore.textContent = "";
+    tableEl.style.display = "none";
 }
 //////////////////////////////////
 

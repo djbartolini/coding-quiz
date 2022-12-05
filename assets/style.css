@@ -25,7 +25,8 @@ main {
 #timer {
     text-align: center;
     margin: 50px 45% 0 45%;
-    background-color: royalblue;
+    /* background-color: royalblue; */
+    background-image: linear-gradient(to bottom right, royalblue, rgb(172, 113, 201));
     color: white;
     font-weight: bold;
     padding: 10px;
@@ -48,6 +49,6 @@ button {
     box-shadow: 3px 3px 8px rgba(128, 128, 128, 50);
 }
 
-li {
-    flex-direction: row;
+td, th {
+    padding-left: 10px;
 }
