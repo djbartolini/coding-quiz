@@ -12,7 +12,7 @@ var pEl = document.getElementById("p");
 var tableEl = document.getElementById("table");
 var tableInitials = document.getElementById("table-initials");
 var tableScore = document.getElementById("table-score");
-var tableHead = document.getElementById("th");
+// var tableHead = document.getElementById("th");
 var goBack = document.getElementById("go-back");
 var clear = document.getElementById("clear");
 
@@ -24,9 +24,9 @@ timerEl.style.display = "none";
 tryAgain.style.display = "none";
 formEl.style.display = "none";
 tableEl.style.display = "none";
-tableHead.style.display = "none";
-tableInitials.style.display = "none";
-tableScore.style.display = "none";
+// tableHead.style.display = "none";
+// tableInitials.style.display = "none";
+// tableScore.style.display = "none";
 goBack.style.display = "none";
 clear.style.display = "none";
 
@@ -176,8 +176,8 @@ function deduct() {
 // GAME OVER /////////////////////
 
 var gameOver = function() {
-    var allInitials = [localStorage.getItem("initials")];
-    var allScores = [localStorage.getItem("scores")];
+    var allInitials = JSON.parse(localStorage.getItem("initials")) || [];
+    var allScores = JSON.parse(localStorage.getItem("scores")) || [];
     var score = timeLeft;
     timerEl.textContent = score;
     if (score > 0) {
@@ -195,25 +195,37 @@ var gameOver = function() {
         var initials = document.querySelector("#initials").value;
         allInitials.push(initials);
         allScores.push(score);
-        localStorage.setItem("initials", allInitials);
-        localStorage.setItem("scores", allScores);
+        localStorage.setItem("initials", JSON.stringify(allInitials));
+        localStorage.setItem("scores", JSON.stringify(allScores));
         renderScores();
     })
 }
 
-
 var renderScores = function() {
     h2El.textContent = "High Scores"
     formEl.style.display = "none";
-    tableHead.style.display = "inline-table"
+    // tableHead.style.display = "inline-table"
     tableEl.style.display = "inline-table";
-    tableInitials.style.display = "inline-table";
-    // tableInitials.style.flexDirection = "column";
-    tableScore.style.display = "inline-table";
-    // tableScore.style.flexDirection = "column"
-    var initialsText = localStorage.getItem("initials");
-    tableInitials.textContent = initialsText;
-    tableScore.textContent = localStorage.getItem("scores");
+    // tableInitials.style.display = "flex";
+    // tableScore.style.display = "flex";
+
+    var initials = JSON.parse(localStorage.getItem("initials"));//.split(",").join(",");
+    var localScores = JSON.parse(localStorage.getItem("scores"));
+    for(var i = 0; i < initials.length; i++){
+        var trEl = document.createElement("tr");
+        var initialEl = document.createElement("td");
+        var scoreEl = document.createElement("td");
+
+        initialEl.textContent = initials[i];
+        scoreEl.textContent = localScores[i];
+
+        trEl.appendChild(initialEl);
+        trEl.appendChild(scoreEl);
+        tableEl.append(trEl);
+    }
+    // tableInitials.textContent = 
+    // tableScore.textContent = //.split(",");
+    
     goBack.style.display = "inline-block";
     clear.style.display = "inline-block";
     goBack.addEventListener("click", restart);
@@ -225,7 +237,7 @@ var restart = function() {
     timeLeft = 75;
     index = 0;
     tableEl.style.display = "none";
-    tableHead.style.display = "none";
+    // tableHead.style.display = "none";
     tableInitials.style.display = "none";
     tableScore.style.display = "none";
     goBack.style.display = "none";

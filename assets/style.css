@@ -26,6 +26,8 @@ main {
     text-align: center;
     margin: 50px 45% 0 45%;
     background-color: royalblue;
+    color: white;
+    font-weight: bold;
     padding: 10px;
     border-radius: 6px;
     box-shadow: 3px 3px 8px rgba(128, 128, 128, 50);
@@ -38,10 +40,14 @@ main {
 }
 
 button {
-    background-color: rgba(189, 92, 253, 0.75);
+    background-color: rgba(30, 186, 155, 0.75);
     padding: 7px;
     border-radius: 4px;
     margin: 8px;
     font-family: Verdana;
     box-shadow: 3px 3px 8px rgba(128, 128, 128, 50);
+}
+
+li {
+    flex-direction: row;
 }
