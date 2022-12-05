@@ -150,7 +150,11 @@ function countdown() {
     var timeInterval = setInterval(function() {
         timeLeft--;
         displayTimer();
-        if (timeLeft <= 0 || index > 5) {
+        if (timeLeft === 0 || index > 5) {
+            clearInterval(timeInterval);
+            gameOver();
+        } else if (timeLeft < 0) {
+            timeLeft = 0;
             clearInterval(timeInterval);
             gameOver();
         }
@@ -175,6 +179,7 @@ var gameOver = function() {
     var allInitials = [localStorage.getItem("initials")];
     var allScores = [localStorage.getItem("scores")];
     var score = timeLeft;
+    timerEl.textContent = score;
     if (score > 0) {
         h2El.textContent = "All Done!";
     } else {
