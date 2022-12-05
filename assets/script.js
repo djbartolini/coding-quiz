@@ -168,6 +168,7 @@ var gameOver = function() {
     button2El.style.display = "none";
     button3El.style.display = "none";
     button4El.style.display = "none";
+    tryAgain.style.display = "none";
     formEl.style.display = "block";
 }
 
