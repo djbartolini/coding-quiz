@@ -28,24 +28,26 @@ clear.style.display = "none";
 
 var questions = [
     "Welcome to the Coding Quiz!",
-    "Question 1?",
-    "Question 2?",
-    "Question 3?",
-    "Question 4?",
-    "Question 5?"
+    "What is the syntax for an HTML tag??",
+    "What symbol is used to end a line of code in Javascript?",
+    "The JavaScript Math.random() function will return what value?",
+    "Which of these JavaScript operators represent strict equality?",
+    "Which JavaScript document method is used to return ALL elements matching a specified (CSS) selector?"
 ];
 
+// ANSWER KEY // 1: A // 2: A // 3: D // 4: C // 5: A //
+
 var optionA = [
-    "1a correct", "2a correct", "3a", "4a", "5a correct"
+    "a. <> ", "a. ; ", "a. A random number between 0 and 99", "a. = ", "a. querySelectorAll()"
 ];
 var optionB = [
-    "1b", "2b", "3b", "4b", "5b"
+    "b. {} ", "b. } ", "b. A random number between 0 and 9", "b. == ", "b. querySelector()"
 ];
 var optionC = [
-    "1c", "2c", "3c", "4c correct", "5c"
+    "c. class=\"\" ", "c. ? ", "c. A random floating point number between 1 and 2", "c. === ", "c. getElementByID"
 ];
 var optionD = [
-    "1d", "2d", "3d correct", "4d", "5d"
+    "d. (: :) ", "d. </> ", "d. A random floating point number between 0 and 1", "d. :: ", "d. getElementsByClassName"
 ];
 
 var timeLeft = 75;
@@ -156,7 +158,6 @@ function deduct() {
 // GAME OVER /////////////////////
 
 var gameOver = function() {
-    var score = timeLeft;
     timerEl.textContent = timeLeft;
     if (timeLeft > 0) {
         h2El.textContent = "All Done!";
@@ -172,6 +173,7 @@ var gameOver = function() {
 
 var allInitials = JSON.parse(localStorage.getItem("initials")) || [];
 var allScores = JSON.parse(localStorage.getItem("scores")) || [];
+
 submitEl.addEventListener("click", function(event) {
     event.preventDefault();
     var initials = document.querySelector("#initials").value;
@@ -187,12 +189,11 @@ submitEl.addEventListener("click", function(event) {
 // HIGH SCORES ///////////////////////
 
 var renderScores = function() {
-    h2El.textContent = "High Scores"
+    h2El.textContent = "Recent Scores"
     formEl.style.display = "none";
     tableEl.style.display = "inline-table";
     var initials = JSON.parse(localStorage.getItem("initials"));
     var localScores = JSON.parse(localStorage.getItem("scores"));
-    var localScores = localScores.sort().reverse();
 
     for (var i = 0; i < initials.length; i++) {
         var trEl = document.createElement("tr");

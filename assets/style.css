@@ -22,6 +22,20 @@ main {
     width: 40em;
 }
 
+button {
+    background-color: rgba(30, 186, 155, 0.75);
+    padding: 12px;
+    border-radius: 4px;
+    margin: 8px;
+    font-family: Verdana;
+    font-weight: bold;
+    box-shadow: 3px 3px 8px rgba(128, 128, 128, 50);
+}
+
+td, th {
+    padding-left: 10px;
+}
+
 #timer {
     text-align: center;
     margin: 50px 45% 0 45%;
@@ -40,15 +54,3 @@ main {
     border-top: 2px solid rgba(0, 0, 0, 0.6);
 }
 
-button {
-    background-color: rgba(30, 186, 155, 0.75);
-    padding: 7px;
-    border-radius: 4px;
-    margin: 8px;
-    font-family: Verdana;
-    box-shadow: 3px 3px 8px rgba(128, 128, 128, 50);
-}
-
-td, th {
-    padding-left: 10px;
-}
